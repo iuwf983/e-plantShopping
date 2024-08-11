@@ -300,21 +300,26 @@ const handlePlantsClick = (e) => {
                 <div key={index}>
                     <div class='plantname_heading'><h1 className='plant_heading'>{category.category}</h1></div>
                     <div className='product-list'>
-                        {category.plants.map((plant, pIndex) => (
-                            <div className='product-card' key={pIndex}>
-                                <div className='product-title'>{plant.name}</div>
-                                <img className='product-image' src={plant.image} alt={plant.name} />
-                                <div className='product-price'>{plant.cost}</div>
-                                <div className='product-description'>{plant.description}</div>
-                                <button className='product-button' onClick={() => handleAddToCart(plant)}>Add to Cart</button>
-                            </div>
-                        ))}
+                        {category.plants.map((plant, pIndex) => {
+                            const isInCart = addedToCart?.[plant.name];
+
+                            return (
+                                <div className='product-card' key={pIndex}>
+                                    <div className='product-title'>{plant.name}</div>
+                                    <img className='product-image' src={plant.image} alt={plant.name} />
+                                    <div className='product-price'>{plant.cost}</div>
+                                    <div className='product-description'>{plant.description}</div>
+                                    <button className={isInCart ? 'product-button added-to-cart' : 'product-button'} disabled={isInCart} onClick={() => handleAddToCart(plant)}>
+                                        Add{isInCart ? "ed" : ""} to Cart
+                                    </button>
+                                </div>
+                        )})}
                     </div>
                 </div>
             ))}
         </div>
  ) :  (
-    <CartItem onContinueShopping={handleContinueShopping}/>
+    <CartItem onContinueShopping={handleContinueShopping} setAddedToCart={setAddedToCart}/>
 )}
     </div>
     );
